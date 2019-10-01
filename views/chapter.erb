@@ -6,9 +6,9 @@
 
     <title><%= @title %></title>
 
-    <link rel="stylesheet" href="stylesheets/pure-min.css">
-    <link rel="stylesheet" href="stylesheets/fonts.css">
-    <link rel="stylesheet" href="stylesheets/book_viewer.css">
+    <link rel="stylesheet" href="/stylesheets/pure-min.css">
+    <link rel="stylesheet" href="/stylesheets/fonts.css">
+    <link rel="stylesheet" href="/stylesheets/book_viewer.css">
 </head>
 
 <body>
@@ -42,13 +42,7 @@
           <h2 class="content-subhead"><%= @title %></h2>
 
           <div class="pure-menu">
-            <ul class="pure-menu-list">
-
-              <li class="pure-menu-item">
-                <a href="#" class="pure-menu-link"><%= @chapter_contents %></a>
-              </li>
-
-            </ul>
+            <%= @chapter_contents %>
           </div>
 
 
