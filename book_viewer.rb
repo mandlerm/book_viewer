@@ -33,6 +33,20 @@ get "/show/:name" do
   params[:name]
 end
 
+get "/search" do
+  @results = {}
+  @search_term = params[:query]
+    if @search_term
+      @contents.each_with_index do |chap, idx|
+        chapter = File.read("data/chp#{idx + 1}.txt")
+        @results[@contents[idx]] = idx + 1 if chapter.downcase.include?(@search_term.downcase)
+
+      end
+    end
+
+  erb :search
+end
+
 not_found do
   redirect "/"
 end
