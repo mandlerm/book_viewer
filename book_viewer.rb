@@ -34,19 +34,32 @@ get "/show/:name" do
 end
 
 get "/search" do
-  @results = {}
-  @search_term = params[:query]
-    if @search_term
-      @contents.each_with_index do |chap, idx|
-        chapter = File.read("data/chp#{idx + 1}.txt")
-        @results[@contents[idx]] = idx + 1 if chapter.downcase.include?(@search_term.downcase)
-
-      end
-    end
-
+  @results = chapters_matching(params[:query])
   erb :search
 end
 
 not_found do
   redirect "/"
+end
+
+# helper methods for 'search' route
+
+def each_chapter
+  @contents.each_with_index do |name, index|
+    number = index + 1
+    contents = File.read("data/chp#{number}.txt")
+    yield number, name, contents
+  end
+end
+
+def chapters_matching(query)
+  results = []
+
+  return results if !query || query.empty?
+
+  each_chapter do |number, name, contents|
+    results << {number: number, name: name} if contents.include?(query)
+  end
+
+  results
 end
