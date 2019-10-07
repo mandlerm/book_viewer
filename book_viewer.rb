@@ -8,7 +8,7 @@ end
 
 helpers do
   def in_paragraphs(chapter)
-    chapter.split("\n\n").map { |line| "<p>#{line}</p>" }.join
+    chapter.split("\n\n").map.with_index { |line, index| "<p id=#{index} >#{line}</p>" }.join
   end
 end
 
