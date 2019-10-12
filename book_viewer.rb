@@ -1,6 +1,7 @@
 require "sinatra"
 require "sinatra/reloader"
 require "tilt/erubis"
+require 'pry'
 
 before do
   @contents = File.readlines('data/toc.txt', chomp: true)
@@ -8,7 +9,7 @@ end
 
 helpers do
   def in_paragraphs(chapter)
-    chapter.split("\n\n").map.with_index { |line, index| "<p id=#{index} >#{line}</p>" }.join
+    chapter.split("\n\n").map.with_index { |line, index| "<p id=paragraph#{index} >#{line}</p>" }.join
   end
 end
 
@@ -58,8 +59,23 @@ def chapters_matching(query)
   return results if !query || query.empty?
 
   each_chapter do |number, name, contents|
-    results << {number: number, name: name} if contents.include?(query)
-  end
+    matches = {}
+    contents.split("\n\n").each_with_index do |paragraph, index|
+      if paragraph.include?(query)
+        str_location = paragraph.index(query)
+        formatted_string = paragraph[0..str_location - 1] + "<strong>" + query + "</strong>"  + paragraph[str_location + query.length..-1]
 
+
+        matches[index] = formatted_string
+      end
+    end
+    results << {number: number, name: name, paragraphs: matches} if matches.any?
+  end
   results
 end
+
+# if it includes query
+  # => then we need to read line-by-line (or paragraph by paragraph)
+  # ==> when we find a match, we returned all of the text in that paragraph.
+    # ===> results << [text from the paragraph]
+    # link will be 1. to that page, and 2. to that ID
