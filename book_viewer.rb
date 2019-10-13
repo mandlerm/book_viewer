@@ -1,7 +1,6 @@
 require "sinatra"
 require "sinatra/reloader"
 require "tilt/erubis"
-require 'pry'
 
 before do
   @contents = File.readlines('data/toc.txt', chomp: true)
@@ -73,9 +72,3 @@ def chapters_matching(query)
   end
   results
 end
-
-# if it includes query
-  # => then we need to read line-by-line (or paragraph by paragraph)
-  # ==> when we find a match, we returned all of the text in that paragraph.
-    # ===> results << [text from the paragraph]
-    # link will be 1. to that page, and 2. to that ID
